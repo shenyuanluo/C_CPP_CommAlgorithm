@@ -10,7 +10,7 @@
 ## (顺序)栈操作实例代码
 
 ### 数据准备
-#### 定义栈结构
+#### 定义（顺序）栈结构
 ``` C
 /** 栈的最大长度 */
 #define MAX_LEN 100
@@ -38,8 +38,8 @@ typedef struct {
     int stackTop;                       // 栈顶位置
 }SSType;
 ```
-
-#### 栈初始化
+### （顺序）相关操作
+#### （顺序）栈初始化
 ``` C
 SSType* StackInit()
 {
@@ -54,7 +54,7 @@ SSType* StackInit()
 }
 ```
 
-#### 栈为空判断
+#### （顺序）栈为空判断
 ``` C
 RetValue StackIsEmpty(SSType* pStack)
 {
@@ -75,7 +75,7 @@ RetValue StackIsEmpty(SSType* pStack)
 }
 ```
 
-#### 栈填满判断
+#### （顺序）栈填满判断
 ``` C
 RetValue StackIsFull(SSType* pStack)
 {
@@ -96,7 +96,7 @@ RetValue StackIsFull(SSType* pStack)
 }
 ```
 
-#### 栈清空
+#### （顺序）栈清空
 ``` C
 RetValue StackClear(SSType* pStack)
 {
@@ -111,7 +111,7 @@ RetValue StackClear(SSType* pStack)
 }
 ```
 
-#### 栈释放
+#### （顺序）栈释放
 ``` C
 RetValue StackFree(SSType* pStack)
 {
@@ -126,7 +126,7 @@ RetValue StackFree(SSType* pStack)
 }
 ```
 
-#### 入栈
+#### 入（顺序）栈
 ``` C
 RetValue StackPush(SSType* pStack, NodeData nData)
 {
@@ -148,7 +148,7 @@ RetValue StackPush(SSType* pStack, NodeData nData)
 }
 ```
 
-#### 出栈
+#### 出（顺序）栈
 ``` C
 RetValue StackPop(SSType* pStack, NodeData* nData)
 {
@@ -170,7 +170,7 @@ RetValue StackPop(SSType* pStack, NodeData* nData)
 }
 ```
 
-#### 读取栈顶节点数据
+#### 读取（顺序）栈顶节点数据
 ``` C
 RetValue StackPeek(SSType* pStack, NodeData* peekData)
 {
@@ -191,7 +191,7 @@ RetValue StackPeek(SSType* pStack, NodeData* peekData)
 }
 ```
 
-#### 显示栈所有数据
+#### 显示（顺序）栈所有数据
 ``` C
 RetValue StackShowAll(SSType* pStack)
 {
@@ -211,5 +211,215 @@ RetValue StackShowAll(SSType* pStack)
         printf("key = %-15s name = %-20s age = %d\n", pStack->stackData[i].key, pStack->stackData[i].name, pStack->stackData[i].age);
     }
     return Ret_YES;
+}
+```
+
+## (链式)栈操作实例代码
+
+### 数据准备
+#### 定义（链式）栈结构
+``` C
+/** 栈作返回值 */
+typedef enum {
+    RetError            = -1,           // 操作出错
+    RetFailure          = 0,            // 操作失败
+    RetSuccess          = 1,            // 操作成功
+}RetValue;
+
+
+/** 栈结点类型 */
+typedef struct {
+    char key[15];                       // 学号
+    char name[20];                      // 姓名
+    int age;                            // 年龄
+}NodeData;
+
+
+/** （链式）栈结构 */
+typedef struct node {
+    NodeData nodeData;                  // 保存结点数据
+    struct node* nextNode;              // 保存下一结点的地址
+}LSType;
+
+```
+
+#### 定义“头”结构
+``` C
+/** 链表头 */
+typedef struct _head {
+    LSType* headNode;                   // 保存链表头结点地址
+    LSType* tailNode;                   // 保存链表尾结点地址
+    unsigned int clLength;              // 链表长度
+}Head;
+```
+
+### （链式）相关操作
+#### （链式）栈初始化
+``` C
+Head* LStackInit()
+{
+    Head* pHead;
+    if (!(pHead = (Head*)malloc(sizeof(Head))))
+    {
+        printf("无法分配栈头指针内存，（链式）栈初始化失败！\n");
+        return NULL;
+    }
+    pHead->headNode = NULL;
+    pHead->tailNode = NULL;
+    pHead->clLength = 0;
+    
+    return pHead;
+}
+```
+
+#### 入（链式）栈
+``` C
+RetValue LStackPush(Head* pHead, NodeData inData)
+{
+    if (NULL == pHead)
+    {
+        printf("（链式）栈指针不存在，无法入栈\n");
+        return RetError;
+    }
+    LSType* newNode;
+    if (!(newNode = (LSType*) malloc(sizeof(LSType))))
+    {
+        printf("新添加结点内存申请失败，无法入栈！\n");
+        return RetFailure;
+    }
+    newNode->nodeData = inData;
+    newNode->nextNode = NULL;
+    if (NULL == pHead->tailNode)
+    {
+        pHead->headNode = newNode;
+    }
+    else
+    {
+        pHead->tailNode->nextNode = newNode;
+    }
+    pHead->tailNode = newNode;
+    pHead->clLength++;
+    
+    return RetSuccess;
+}
+```
+
+#### 出（链式）栈
+``` C
+RetValue LStackPop(Head* pHead, NodeData* outData)
+{
+    if (NULL == pHead)
+    {
+        printf("（链式）栈指针不存在，无法入栈\n");
+        return RetError;
+    }
+    if (NULL == pHead->tailNode)
+    {
+        printf("栈内无结点，无法出栈！\n");
+        return RetFailure;
+    }
+
+    memcpy(outData, &pHead->tailNode->nodeData, sizeof(NodeData));
+    
+    LSType* tempHead = pHead->headNode;
+    LSType* deleteNode = pHead->headNode;
+    while (NULL != deleteNode->nextNode)
+    {
+        tempHead   = deleteNode;
+        deleteNode = tempHead->nextNode;
+    }
+    tempHead->nextNode = NULL;
+    pHead->tailNode    = tempHead;
+    pHead->clLength--;
+    
+    free(deleteNode);
+    
+    return RetSuccess;
+}
+```
+
+#### 判断（链式）栈是否为空
+``` C
+RetValue LStackIsEmpty(Head* pHead)
+{
+    if (NULL == pHead)
+    {
+        printf("（链式）栈指针不存在，无法进行为空判断！\n");
+        return RetError;
+    }
+    if (0 == pHead->clLength)
+    {
+        return RetSuccess;
+    }
+    return RetFailure;
+}
+```
+
+#### 销毁（链式）栈
+``` C
+RetValue LStackDestroy(Head* pHead)
+{
+    if (NULL == pHead)
+    {
+        printf("（链式）栈指针不存在，无法销毁栈\n");
+        return RetError;
+    }
+    LSType* tempHead;
+    while (pHead->headNode)
+    {
+        tempHead = pHead->headNode;
+        pHead->headNode = pHead->headNode->nextNode;
+        free(tempHead);
+    }
+    pHead->tailNode = NULL;
+    pHead->headNode = NULL;
+    free(pHead);
+    
+    return RetSuccess;
+}
+```
+
+#### 读取（链式）栈顶数据
+``` C
+RetValue LStackPeek(Head* pHead, NodeData* peekData)
+{
+    if (NULL == pHead)
+    {
+        printf("（链式）栈指针不存在，无法读取栈顶数据！\n");
+        return RetError;
+    }
+    if (RetSuccess == LStackIsEmpty(pHead))
+    {
+        printf("（链式）栈为空，栈顶数据不存在！\n");
+        return RetError;
+    }
+    
+    *peekData = pHead->tailNode->nodeData;
+    
+    return RetSuccess;
+}
+```
+
+#### 显示（链式）栈所有结点数据
+``` C
+RetValue LStackShowAll(Head* pHead)
+{
+    if (NULL == pHead)
+    {
+        printf("(链式)栈指针不存在，无法显示栈所有数据！\n");
+        return RetError;
+    }
+    if (RetSuccess == LStackIsEmpty(pHead))
+    {
+        printf("（链式）栈为空，栈数据不存在！\n");
+        return RetFailure;
+    }
+    LSType* tempHead = pHead->headNode;
+    while (tempHead)
+    {
+        printf("key = %-15s name = %-20s age = %d\n", tempHead->nodeData.key, tempHead->nodeData.name, tempHead->nodeData.age);
+        tempHead = tempHead->nextNode;
+    }
+    return RetSuccess;
 }
 ```

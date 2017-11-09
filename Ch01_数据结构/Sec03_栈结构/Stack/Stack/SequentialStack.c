@@ -10,12 +10,12 @@
 
 
 #pragma mark -- 栈初始化
-SSType* StackInit()
+SSType* SStackInit()
 {
-    SSType *pStack;
-    if (!(pStack = (SSType *)malloc(sizeof(SSType))))
+    SSType* pStack;
+    if (!(pStack = (SSType*)malloc(sizeof(SSType))))
     {
-        printf("无法分配栈内存，栈初始化失败！\n");
+        printf("无法分配栈内存，（顺序）栈初始化失败！\n");
         return NULL;
     }
     pStack->stackTop = 0;
@@ -24,152 +24,152 @@ SSType* StackInit()
 
 
 #pragma mark -- 栈为空判断
-RetValue StackIsEmpty(SSType* pStack)
+RetValue SStackIsEmpty(SSType* pStack)
 {
     if (NULL == pStack)
     {
-        printf("栈指针不存在，无法进行为空判断！\n");
-        return Ret_Error;
+        printf("（顺序）栈指针不存在，无法进行空栈判断！\n");
+        return RetError;
     }
     
     if (0 == pStack->stackTop)
     {
-        return Ret_YES;
+        return RetSuccess;
     }
     else
     {
-        return Ret_NO;
+        return RetFailure;
     }
 }
 
 
 #pragma mark -- 栈填满判断
-RetValue StackIsFull(SSType* pStack)
+RetValue SStackIsFull(SSType* pStack)
 {
     if (NULL == pStack)
     {
-        printf("栈指针不存在，无法进行填满判断！\n");
-        return Ret_Error;
+        printf("（顺序）栈指针不存在，无法进行满栈判断！\n");
+        return RetError;
     }
     
     if (MAX_LEN == pStack->stackTop)
     {
-        return Ret_YES;
+        return RetSuccess;
     }
     else
     {
-        return Ret_NO;
+        return RetFailure;
     }
 }
 
 
 #pragma mark -- 栈清空
-RetValue StackClear(SSType* pStack)
+RetValue SStackClear(SSType* pStack)
 {
     if (NULL == pStack)
     {
-        printf("栈指针不存在，无法进行栈清空！\n");
-        return Ret_Error;
+        printf("（顺序）栈指针不存在，无法进行栈清空！\n");
+        return RetError;
     }
     
     pStack->stackTop = 0;
-    return Ret_YES;
+    return RetSuccess;
 }
 
 
 #pragma mark -- 栈释放
-RetValue StackFree(SSType* pStack)
+RetValue SStackFree(SSType* pStack)
 {
     if (NULL == pStack)
     {
-        printf("栈指针不存在，无法进行栈释放！\n");
-        return Ret_Error;
+        printf("（顺序）栈指针不存在，无法进行栈释放！\n");
+        return RetError;
     }
     
     free(pStack);
-    return Ret_YES;
+    return RetSuccess;
 }
 
 
 #pragma mark -- 入栈
-RetValue StackPush(SSType* pStack, NodeData nData)
+RetValue SStackPush(SSType* pStack, NodeData inData)
 {
     if (NULL == pStack)
     {
-        printf("栈指针不存在，无法入栈！\n");
-        return Ret_Error;
+        printf("（顺序）栈指针不存在，无法入栈！\n");
+        return RetError;
     }
-    if (Ret_YES == StackIsFull(pStack))
+    if (RetSuccess == SStackIsFull(pStack))
     {
-        printf("栈已满，无法入栈！\n");
-        return Ret_Error;
+        printf("（顺序）栈已满，无法入栈！\n");
+        return RetFailure;
     }
     
-    pStack->stackData[pStack->stackTop] = nData;
+    pStack->stackData[pStack->stackTop] = inData;
     pStack->stackTop++;
     
-    return Ret_YES;
+    return RetSuccess;
 }
 
 
 #pragma mark -- 出栈
-RetValue StackPop(SSType* pStack, NodeData* nData)
+RetValue SStackPop(SSType* pStack, NodeData* outData)
 {
     if (NULL == pStack)
     {
-        printf("栈指针不存在，无法出栈！\n");
-        return Ret_Error;
+        printf("（顺序）栈指针不存在，无法出栈！\n");
+        return RetError;
     }
-    if (Ret_YES == StackIsEmpty(pStack))
+    if (RetSuccess == SStackIsEmpty(pStack))
     {
-        printf("栈为空，无法出栈！\n");
-        return Ret_Error;
+        printf("（顺序）栈为空，无法出栈！\n");
+        return RetFailure;
     }
     
     pStack->stackTop--;
-    *nData = pStack->stackData[pStack->stackTop];
+    *outData = pStack->stackData[pStack->stackTop];
     
-    return Ret_YES;
+    return RetSuccess;
 }
 
 
-#pragma mark -- 读取栈顶节点数据
-RetValue StackPeek(SSType* pStack, NodeData* peekData)
+#pragma mark -- 读取栈顶结点数据
+RetValue SStackPeek(SSType* pStack, NodeData* peekData)
 {
     if (NULL == pStack)
     {
-        printf("栈指针不存在，无法读取栈顶数据！\n");
-        return Ret_Error;
+        printf("（顺序）栈指针不存在，无法读取栈顶数据！\n");
+        return RetError;
     }
-    if (Ret_YES == StackIsEmpty(pStack))
+    if (RetSuccess == SStackIsEmpty(pStack))
     {
-        printf("栈为空，栈顶数据不存在！\n");
-        return Ret_Error;
+        printf("（顺序）栈为空，栈顶数据不存在！\n");
+        return RetFailure;
     }
     
     *peekData = pStack->stackData[pStack->stackTop - 1];
     
-    return Ret_YES;
+    return RetSuccess;
 }
 
 
 #pragma mark -- 显示栈所有数据
-RetValue StackShowAll(SSType* pStack)
+RetValue SStackShowAll(SSType* pStack)
 {
     if (NULL == pStack)
     {
-        printf("栈指针不存在，无法显示栈所有数据！\n");
-        return Ret_Error;
+        printf("（顺序）栈指针不存在，无法显示栈所有数据！\n");
+        return RetError;
     }
-    if (Ret_YES == StackIsEmpty(pStack))
+    if (RetSuccess == SStackIsEmpty(pStack))
     {
-        printf("栈为空，栈数据不存在！\n");
-        return Ret_Error;
+        printf("（顺序）栈为空，栈数据不存在！\n");
+        return RetFailure;
     }
     
     for (int i = 0; i < pStack->stackTop; i++)
     {
         printf("key = %-15s name = %-20s age = %d\n", pStack->stackData[i].key, pStack->stackData[i].name, pStack->stackData[i].age);
     }
-    return Ret_YES;
+    return RetSuccess;
 }

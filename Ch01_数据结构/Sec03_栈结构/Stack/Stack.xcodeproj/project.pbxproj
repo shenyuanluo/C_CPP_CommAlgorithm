@@ -31,6 +31,7 @@
 		149A74181FB35C7100ADC847 /* SequentialStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SequentialStack.h; sourceTree = "<group>"; };
 		149A741A1FB35C8600ADC847 /* LinkedStack.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = LinkedStack.c; sourceTree = "<group>"; };
 		149A741B1FB35C8600ADC847 /* LinkedStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkedStack.h; sourceTree = "<group>"; };
+		14D233471FB47DB900BAD84F /* StackHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StackHeader.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +64,7 @@
 		149A740C1FB35AC100ADC847 /* Stack */ = {
 			isa = PBXGroup;
 			children = (
+				14D233471FB47DB900BAD84F /* StackHeader.h */,
 				149A74181FB35C7100ADC847 /* SequentialStack.h */,
 				149A74171FB35C7100ADC847 /* SequentialStack.c */,
 				149A741B1FB35C8600ADC847 /* LinkedStack.h */,

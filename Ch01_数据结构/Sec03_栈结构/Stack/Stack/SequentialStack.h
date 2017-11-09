@@ -11,26 +11,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "StackHeader.h"
 
 
 /** 栈的最大长度 */
 #define MAX_LEN 100
-
-
-/** 链表操作返回值 */
-typedef enum {
-    Ret_Error           = -1,           // 操作出错
-    Ret_NO              = 0,            // 操作失败
-    Ret_YES             = 1,            // 操作成功
-}RetValue;
-
-
-/** 栈结点类型 */
-typedef struct {
-    char key[15];                       // 学号
-    char name[20];                      // 姓名
-    int age;                            // 年龄
-}NodeData;
 
 
 /** (顺序)栈结构 */
@@ -42,94 +27,94 @@ typedef struct {
 
 
 /**
- 栈初始化
+ （顺序）栈初始化
  
- @return 返回指向栈的指针变量
+ @return 指向栈的指针变量
  */
-SSType* StackInit();
+SSType* SStackInit();
 
 
 
 /**
- 判断栈是否为空
- 
- @param pStack 指向栈的指针变量
- @return 参见‘RetValue’
- */
-RetValue StackIsEmpty(SSType* pStack);
-
-
-
-/**
- 判断栈是否填满
+ 判断（顺序）栈是否为空
  
  @param pStack 指向栈的指针变量
  @return 参见‘RetValue’
  */
-RetValue StackIsFull(SSType* pStack);
+RetValue SStackIsEmpty(SSType* pStack);
 
 
 
 /**
- 栈清空
+ 判断（顺序）栈是否填满
  
  @param pStack 指向栈的指针变量
  @return 参见‘RetValue’
  */
-RetValue StackClear(SSType* pStack);
+RetValue SStackIsFull(SSType* pStack);
 
 
 
 /**
- 栈释放
+ （顺序）栈清空
  
  @param pStack 指向栈的指针变量
  @return 参见‘RetValue’
  */
-RetValue StackFree(SSType* pStack);
+RetValue SStackClear(SSType* pStack);
 
 
 
 /**
- 入栈
+ （顺序）栈释放
  
  @param pStack 指向栈的指针变量
- @param nData 需要入栈数据
  @return 参见‘RetValue’
  */
-RetValue StackPush(SSType* pStack, NodeData nData);
-
+RetValue SStackFree(SSType* pStack);
 
 
 
 /**
- 出栈
+ 入（顺序）栈
  
  @param pStack 指向栈的指针变量
- @param nData 出栈数据
+ @param inData 入栈数据
  @return 参见‘RetValue’
  */
-RetValue StackPop(SSType* pStack, NodeData* nData);
+RetValue SStackPush(SSType* pStack, NodeData inData);
+
 
 
 
 /**
- 读取栈顶节点数据
+ 出（顺序）栈
+ 
+ @param pStack 指向栈的指针变量
+ @param outData 出栈数据
+ @return 参见‘RetValue’
+ */
+RetValue SStackPop(SSType* pStack, NodeData* outData);
+
+
+
+/**
+ 读取（顺序）栈顶结点数据
  
  @param pStack 指向栈的指针变量
  @param peekData 栈顶数据
  @return 参见‘RetValue’
  */
-RetValue StackPeek(SSType* pStack, NodeData* peekData);
+RetValue SStackPeek(SSType* pStack, NodeData* peekData);
 
 
 
 /**
- 显示栈所有节点数据
+ 显示（顺序）栈所有结点数据
  
  @param pStack 指向栈的指针变量
  @return 参见‘RetValue’
  */
-RetValue StackShowAll(SSType* pStack);
+RetValue SStackShowAll(SSType* pStack);
 
 #endif /* SequentialStack_h */
