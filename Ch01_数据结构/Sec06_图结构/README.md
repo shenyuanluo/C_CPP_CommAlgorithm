@@ -44,11 +44,20 @@
 15. 网：网就是边上带有权值的图的另一种名称。
 
 ## 图的遍历
-> 图的遍历是指从图中的某一顶点出发，按照一定的策略访问图中的每一个顶点。而且每个顶点有且只能被访问一次。
+> 图的遍历是指从图中的某一顶点出发，按照一定的策略访问图中的每一个顶点。而且每个顶点有且只能被访问一次；也是将网络结构按某种规则线性化的过程。对图的遍历通常有**"深度优先搜索（遍历）"**和**"广度优先搜索（遍历）"**方法。
 
-1. 深度优先遍历(Depth First Search)：（也叫深度优先搜索）不断地沿着顶点的深度方向（顶点的邻接点方向）遍历。
-2. 广度优先遍历(Breadth First Search)：（也叫广度优先搜索）先访问完当前顶点的所有邻接点；
-先访问顶点的邻接点**先于**后访问顶点的邻接点被访问。
+### 深度优先搜索（Depth First Search：DFS）
+1. 算法思路：类似树的**先根遍历**。设初始化时，图中各顶点均未被访问，从图中某个顶点(设为`V0`)出发，访问`V0`；然后搜索`V0`的**一个**邻接点`Vi`,若`Vi`未被访问，则访问之；再搜索`Vi`的一个邻接点(深度优先);不断地沿着顶点的深度方向（顶点的邻接点方向）遍历...。若某顶点的邻接点全部访问完毕，则回溯(Backtracking)到它的上一顶点，然后再从此顶点又按深度优先的方法搜索下去，...，直到能访问的顶点都访问完毕为止。
+
+	![无向图](DepthFirstSearch.png)
+	![DFS示意图](DepthFirstSearchShow.png)
+### 广度优先搜索（Breadth First Search：BFS）
+1. 算法思路：类似树的**按层次遍历**。设初始时，图中各顶点均未被访问，从图中某顶点(设为`V0`)出发，访问`V0`，并依次访问`V0`的**各个**邻接点(广度优先)。然后，分别从这些**被访问过**的顶点出发，仍按照广度优先的策略搜索其它顶点，先访问顶点的邻接点**先于**后访问顶点的邻接点被访问....直到能访问的顶点都访问完毕为止。
+2. 技巧：为控制广度优先的正确搜索，要用到**队列**技术，即访问完一个顶点后，让该顶点的序号入队。然后取相应队头(出队),考察访问过的顶点的各邻接点，将未访问过的邻接点访问 后再依次进队，...，直到队空为止。
+
+	![无向图](BreadthFirstSearch.png)
+	![BFS示意图](BreadthFirstSearchShow.png)
+
 
 ## 图操作实例代码
 
@@ -90,7 +99,6 @@ void GraphCreate(GMType* gm)
         printf("图结构指针不存在，无法创建图结构！\n");
         return;
     }
-    int i, j, k;
     int weight;                                         // 权值
     char eStartV;                                       // 边的起始顶点
     char eEndV;                                         // 边的结束顶点
@@ -106,21 +114,47 @@ void GraphCreate(GMType* gm)
     
     printf("\n输入构成各边的顶点及权值，格式：起始顶点 结束顶点 权值 \n");
     
-    for (k = 0; k < gm->edgeNum; k++)                   // 输入各边的值
+    for (int j = 0; j < gm->edgeNum; j++)                   // 输入各边的值
     {
         getchar();
-        printf("第 %d 条边：", k + 1);
+        printf("第 %d 条边：", j + 1);
         scanf("%c %c %d", &eStartV, &eEndV, &weight);
         
-        for (i = 0; eStartV != gm->vertex[i]; i++);     // 在已有顶点中查找边的起始顶点
-        
-        for (j = 0; eEndV != gm->vertex[j]; j++);       // 在已有顶点中查找边的结束顶点
+        int startIndex, endIndex;
+        // 在已有顶点中循环查找边的起始顶点
+        for (startIndex = 0; startIndex < gm->vertexNum; startIndex++)
+        {
+            if (eStartV == gm->vertex[startIndex])
+            {
+                break;
+            }
+        }
+        // 在已有顶点中循环查找边的结束顶点
+        for (endIndex = 0; endIndex < gm->vertexNum; endIndex++)
+        {
+            if (eEndV == gm->vertex[endIndex])
+            {
+                break;
+            }
+        }
+        if (gm->vertexNum <= startIndex)
+        {
+            printf("起始顶点不存在，请重新输入！\n");
+            j--;
+            continue;
+        }
+        if (gm->vertexNum <= endIndex)
+        {
+            printf("结束顶点不存在，请重新输入！\n");
+            j--;
+            continue;
+        }
         
         // 顶点找到
-        gm->edgeWeight[i][j] = weight;                  // 在对应位置保存权值，表示有一条边
+        gm->edgeWeight[startIndex][endIndex] = weight;                  // 在对应位置保存权值，表示有一条边
         if (0 == gm->type)      // 无向图
         {
-            gm->edgeWeight[j][i] = weight;              // 在对角位置保存权值
+            gm->edgeWeight[endIndex][startIndex] = weight;              // 在对角位置保存权值
         }
     }
 }
@@ -142,6 +176,39 @@ void GraphClear(GMType* gm)
             gm->edgeWeight[i][j] = MAX_VALUE;           // 设置矩阵中各元素的值为 Max Value
         }
     }
+}
+```
+
+#### 访问某个顶点的值
+``` C
+void GraphVisitVertex(GMType* gm, unsigned int index)
+{
+    if (NULL == gm)
+    {
+        printf("图结构指针不存在，无法访问某个顶点的值！\n");
+        return;
+    }
+    printf("-->%c", gm->vertex[index]);
+}
+```
+
+#### 查询关键字-key 对应的顶点下标
+``` C
+unsigned int GraphNodeIndex(GMType* gm, char key)
+{
+    if (NULL == gm)
+    {
+        printf("图结构指针不存在，无法查询关键字-key 对应的顶点下标！\n");
+        return MAX_VALUE;
+    }
+    for (int i = 0; i < gm->vertexNum; i++)
+    {
+        if (key == gm->vertex[i])
+        {
+            return i;
+        }
+    }
+    return MAX_VALUE;
 }
 ```
 
@@ -198,15 +265,15 @@ void GraphDFTOne(GMType* gm, unsigned int index)
         if (MAX_VALUE != gm->edgeWeight[index][i]
             && TRAVERSE_NO == gm->isTraverse[i])
         {
-            GraphDFTOne(gm, i);                     // 递归对该顶点的邻接顶点进行遍历
+            GraphDFTOne(gm, i);                         // 递归对该顶点的邻接顶点进行遍历
         }
     }
 }
 ```
 
-#### 深度优先遍历图结构
+#### 深度优先遍历(或深度优先搜索：Depth First Search)图结构
 ``` C
-void GraphDeepFirstTraverse(GMType* gm)
+void GraphDepthFirstSearch(GMType* gm)
 {
     if (NULL == gm)
     {
@@ -224,6 +291,59 @@ void GraphDeepFirstTraverse(GMType* gm)
         if (TRAVERSE_NO == gm->isTraverse[j])
         {
             GraphDFTOne(gm, j);
+        }
+    }
+    printf("\n");
+}
+```
+
+#### 广度优先遍历(或广度优先搜索：Breadth First Search)图结构
+``` C
+void GraphBreadthFirstSearch(GMType* gm)
+{
+    if (NULL == gm)
+    {
+        printf("图结构指针不存在，无法广度优先遍历图结构！\n");
+        return;
+    }
+    for (int i = 0; i < gm->vertexNum; i++)             // 清除各顶点的遍历标志
+    {
+        gm->isTraverse[i] = TRAVERSE_NO;
+    }
+    
+    char qGraph[MATRIX_NUM];                            // 图结点循环队列
+    unsigned int tail = 0;                              // 队尾（入队列）
+    unsigned int head = 0;                              // 队头（出队列）
+    
+    printf("广度度优先遍历图结构结点！\n");
+    
+    for (int j = 0; j < gm->vertexNum; j++)
+    {
+        if (TRAVERSE_NO == gm->isTraverse[j])
+        {
+            gm->isTraverse[j] = TRAVERSE_YES;           // 标记该顶点已处理过
+            GraphVisitVertex(gm, j);
+            qGraph[tail++] = gm->vertex[j];             // 已处理的顶入队列
+            
+            while (head != tail)                        // 循环遍历队列数据
+            {
+                int outIndex = GraphNodeIndex(gm, qGraph[head++]);  // 查询出队列顶点编号
+                
+                if (gm->vertexNum <= outIndex)
+                {
+                    break;
+                }
+                for(int k = 0; k < gm->vertexNum; k++)              // 寻找出队列的顶点的所有邻接顶点
+                {
+                    if(MAX_VALUE != gm->edgeWeight[outIndex][k]
+                       && TRAVERSE_NO == gm->isTraverse[k])
+                    {
+                        gm->isTraverse[k] = TRAVERSE_YES;           // 标记该顶点已处理过
+                        GraphVisitVertex(gm, k);
+                        qGraph[tail++] = gm->vertex[k];             // 已处理的顶入队列
+                    }
+                }
+            }
         }
     }
     printf("\n");

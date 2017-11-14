@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 /** 图的最大顶点数量 */
@@ -54,6 +55,24 @@ void GraphClear(GMType* gm);
 
 
 /**
+ 访问某个顶点的值
+
+ @param gm 指向图结构的指针
+ @param index 顶点的下标
+ */
+void GraphVisitVertex(GMType* gm, unsigned int index);
+
+/**
+ 查询关键字-key 对应的顶点下标
+
+ @param gm  指向图结构的指针
+ @param key 关键字-key
+ @return 顶点的下标
+ */
+unsigned int GraphNodeIndex(GMType* gm, char key);
+
+
+/**
  显示图
 
  @param gm 指向图结构的指针
@@ -71,11 +90,19 @@ void GraphDFTOne(GMType* gm, unsigned int index);
 
 
 /**
- 深度优先遍历(或深度优先搜索：Deep First Search)图结构
+ 深度优先遍历(或深度优先搜索：Depth First Search)图结构
 
  @param gm 指向图结构的指针
  */
-void GraphDeepFirstTraverse(GMType* gm);
+void GraphDepthFirstSearch(GMType* gm);
+
+
+/**
+ 广度优先遍历(或广度优先搜索：Breadth First Search)图结构
+ 
+ @param gm 指向图结构的指针
+ */
+void GraphBreadthFirstSearch(GMType* gm);
 
 
 #endif /* Graph_h */

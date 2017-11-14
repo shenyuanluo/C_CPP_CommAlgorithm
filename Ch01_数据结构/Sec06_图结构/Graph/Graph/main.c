@@ -36,7 +36,10 @@ int main()
     GraphShowAll(&graphMatrix);
     
     // 深度优先遍历图结构
-    GraphDeepFirstTraverse(&graphMatrix);
+    GraphDepthFirstSearch(&graphMatrix);
+    
+    // 广度优先遍历图结构
+    GraphBreadthFirstSearch(&graphMatrix);
     
     return 0;
 }
