@@ -9,5 +9,6 @@
 	6. [Sec06 图结构](https://github.com/shenyuanluo/C_CPP_CommAlgorithm/tree/master/Ch01_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/Sec06_%E5%9B%BE%E7%BB%93%E6%9E%84)
 
 2. [Ch02 基本算法思想](https://github.com/shenyuanluo/C_CPP_CommAlgorithm/tree/master/Ch02_%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3)
-	1. [Sec01_穷举算法思想](https://github.com/shenyuanluo/C_CPP_CommAlgorithm/tree/master/Ch02_%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/Sec01_%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3)
-	2. [Sec02 递推算法思想]()
+	1. [Sec01 穷举算法思想](https://github.com/shenyuanluo/C_CPP_CommAlgorithm/tree/master/Ch02_%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/Sec01_%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3)
+	2. [Sec02 递推算法思想](https://github.com/shenyuanluo/C_CPP_CommAlgorithm/tree/master/Ch02_%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/Sec02_%E9%80%92%E6%8E%A8%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3)
+	3. [Sec03 递归算法思想]()
