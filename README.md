@@ -15,5 +15,5 @@
 	4. [Sec04 分治算法思想](https://github.com/shenyuanluo/C_CPP_CommAlgorithm/tree/master/Ch02_%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/Sec04_%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3)
 	5. [Sec05 概率算法思想](https://github.com/shenyuanluo/C_CPP_CommAlgorithm/tree/master/Ch02_%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/Sec05_%E6%A6%82%E7%8E%87%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3)
 
-3. [Ch03 排序算法]()
-	1. [Sec01 冒泡排序]()
+3. [Ch03 排序算法](https://github.com/shenyuanluo/C_CPP_CommAlgorithm/tree/master/Ch03_%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95)
+	1. [Sec01 冒泡排序](https://github.com/shenyuanluo/C_CPP_CommAlgorithm/tree/master/Ch03_%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/Sec01_%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F)
